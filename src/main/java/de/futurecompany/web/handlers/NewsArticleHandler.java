@@ -1,5 +1,7 @@
-package de.futurecompany;
+package de.futurecompany.web.handlers;
 
+import de.futurecompany.services.dtos.ArticleDTO;
+import de.futurecompany.services.NewsArticleService;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -20,15 +22,15 @@ public class NewsArticleHandler {
     public Mono<ServerResponse> fetchArticle(ServerRequest request) {
         var articleId = request.pathVariable("id");
 
-        Mono<ArticleView> article = articleService.fetchArticle(articleId);
+        Mono<ArticleDTO> article = articleService.fetchArticle(articleId);
 
-        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(BodyInserters.fromPublisher(article, ArticleView.class));
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(BodyInserters.fromPublisher(article, ArticleDTO.class));
     }
 
 
     public Mono<ServerResponse> listArticles(ServerRequest serverRequest) {
-        Flux<ArticleView> articles = articleService.listArticles();
+        Flux<ArticleDTO> articles = articleService.listArticles();
 
-        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(BodyInserters.fromPublisher(articles, ArticleView.class));
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(BodyInserters.fromPublisher(articles, ArticleDTO.class));
     }
 }

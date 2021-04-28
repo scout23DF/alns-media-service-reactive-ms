@@ -1,15 +1,15 @@
-package de.futurecompany;
+package de.futurecompany.services.dtos;
 
 import java.util.List;
 
-public class ArticleView {
+public class ArticleDTO {
 
     private final String articleId;
     private final String title;
     private final String text;
     private final List<String> authors;
 
-    public ArticleView(String articleId, String title, String text, List<String> authors) {
+    public ArticleDTO(String articleId, String title, String text, List<String> authors) {
         this.articleId = articleId;
         this.title = title;
         this.text = text;

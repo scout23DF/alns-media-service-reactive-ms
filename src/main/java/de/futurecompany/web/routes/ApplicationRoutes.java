@@ -1,5 +1,6 @@
-package de.futurecompany;
+package de.futurecompany.web.routes;
 
+import de.futurecompany.web.handlers.NewsArticleHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;

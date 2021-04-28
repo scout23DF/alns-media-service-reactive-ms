@@ -1,4 +1,4 @@
-package de.futurecompany;
+package de.futurecompany.models;
 
 import java.util.List;
 

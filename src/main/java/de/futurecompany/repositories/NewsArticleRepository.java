@@ -1,9 +1,11 @@
-package de.futurecompany;
+package de.futurecompany.repositories;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import de.futurecompany.models.ArticleAuthor;
+import de.futurecompany.models.NewsArticle;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
