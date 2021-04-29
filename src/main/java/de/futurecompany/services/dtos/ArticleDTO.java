@@ -1,34 +1,26 @@
 package de.futurecompany.services.dtos;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ArticleDTO {
 
+    /*
     private final String articleId;
     private final String title;
     private final String text;
     private final List<String> authors;
+    */
 
-    public ArticleDTO(String articleId, String title, String text, List<String> authors) {
-        this.articleId = articleId;
-        this.title = title;
-        this.text = text;
-        this.authors = authors;
-    }
+    private String articleId;
+    private String title;
+    private String text;
+    private List<ArticleAuthorDTO> authors;
 
-    public String getArticleId() {
-        return articleId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public List<String> getAuthors() {
-        return authors;
-    }
 }

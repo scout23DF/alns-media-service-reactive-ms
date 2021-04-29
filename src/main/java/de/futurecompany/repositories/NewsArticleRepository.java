@@ -1,14 +1,14 @@
 package de.futurecompany.repositories;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
 import de.futurecompany.models.ArticleAuthor;
 import de.futurecompany.models.NewsArticle;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class NewsArticleRepository {
@@ -25,5 +25,12 @@ public class NewsArticleRepository {
 
     public Flux<NewsArticle> list() {
         return Flux.fromIterable(staticArticles);
+    }
+
+    public Mono<NewsArticle> save(NewsArticle toEntity) {
+
+        Optional<NewsArticle> article = staticArticles.stream().filter((a) -> a.getArticleId().equals("1")).findFirst();
+
+        return Mono.just(article).flatMap(Mono::justOrEmpty);
     }
 }

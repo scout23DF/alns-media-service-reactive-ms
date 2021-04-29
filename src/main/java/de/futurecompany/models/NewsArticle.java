@@ -5,11 +5,8 @@ import java.util.List;
 public class NewsArticle {
 
     private final String articleId;
-
     private String title;
-
     private String text;
-
     private List<ArticleAuthor> authors;
 
     public NewsArticle(String articleId, String title, String text, List<ArticleAuthor> authors) {
