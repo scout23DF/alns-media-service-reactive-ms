@@ -1,16 +1,8 @@
 package de.futurecompany.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.config.ResourceHandlerRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
 // @Profile({"!prod && swagger"})
@@ -24,13 +16,39 @@ public class Swagger2Configuration implements WebFluxConfigurer {
         this.appAlnsMediaServiceProperties = pAppProperties;
     }
 
+    /*
+    @Bean
+    public OpenAPI customOpenAPI() {
 
+        ModelConverters.getInstance().addConverter(new WebFluxSupportConverter());
+
+        return new OpenAPI()
+                .components(new Components()
+                        .addSecuritySchemes("JWE", new SecurityScheme()
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWE")))
+                .info(new Info()
+                        .title("Marketplace API")
+                        .version("A Que Funcionar"));
+    }
+
+
+    @Bean
+    public GroupedOpenApi groupOpenApi() {
+        String paths[] = {"/api/**"};
+        String packagesToscan[] = {"de.futurecompany"};
+        return GroupedOpenApi.builder().group("groups").pathsToMatch(paths).packagesToScan(packagesToscan)
+                .build();
+    }
+    */
+
+    /*
     @Bean
     public Docket swaggerApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.any())
-                // .apis(RequestHandlerSelectors.basePackage("de.futurecompany"))
+                .apis(RequestHandlerSelectors.basePackage("de.futurecompany"))
                 .paths(PathSelectors.any())
                 .build();
 
@@ -44,14 +62,21 @@ public class Swagger2Configuration implements WebFluxConfigurer {
                                    .build();
     }
 
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+        registry.addResourceHandler("/swagger-ui/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
+                .resourceChain(false);
 
         registry.addResourceHandler("/swagger-ui.html**")
                 .addResourceLocations("classpath:/META-INF/resources/");
 
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
 
+
+    }
+    */
 }

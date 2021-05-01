@@ -17,14 +17,9 @@ public class AppAlnsMediaServiceProperties {
 
     private boolean enabled;
 
-    private Integer numberOfWeeksAllowedInPlanning;
-
     private String swaggerPageTitle;
     private String swaggerPageDescription;
     private String swaggerPageTermsOfService;
     private String swaggerPageAPIVersion;
-
-    private String weekplanEmailOnMondaysTemplateName;
-    private String defaultVerimiEmailFromRecipient;
 
 }

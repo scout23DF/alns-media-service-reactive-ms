@@ -8,20 +8,17 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder(builderClassName = "ArticleDTOBuilder", toBuilder = true)
+@Builder(builderClassName = "AuthorDTOBuilder", toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PRIVATE) //Hides the constructor to force useage of the Builder.
-@JsonDeserialize(builder = ArticleDTO.ArticleDTOBuilder.class)
-public class ArticleDTO {
+@JsonDeserialize(builder = AuthorDTO.AuthorDTOBuilder.class)
+public class AuthorDTO {
 
-    private final String articleId;
-    private final String title;
-    private final String fullText;
-    private final String authorId;
-    private final String authorName;
-
+    private final Long id;
+    private final String name;
 
     @JsonPOJOBuilder(withPrefix = "")
-    public static class ArticleDTOBuilder {
+    public static class AuthorDTOBuilder {
     }
+
 
 }

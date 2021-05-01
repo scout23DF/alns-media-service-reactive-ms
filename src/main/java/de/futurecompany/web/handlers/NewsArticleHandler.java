@@ -1,6 +1,5 @@
 package de.futurecompany.web.handlers;
 
-import de.futurecompany.models.NewsArticle;
 import de.futurecompany.services.NewsArticleService;
 import de.futurecompany.services.dtos.ArticleDTO;
 import org.springframework.http.MediaType;
@@ -33,7 +32,7 @@ public class NewsArticleHandler {
     }
 
     public Mono<ServerResponse> fetchArticle(ServerRequest serverRequest) {
-        var articleId = serverRequest.pathVariable("id");
+        String articleId = serverRequest.pathVariable("id");
 
         Mono<ArticleDTO> article = articleService.fetchArticle(articleId);
 
@@ -51,7 +50,4 @@ public class NewsArticleHandler {
                              .body(BodyInserters.fromPublisher(articles, ArticleDTO.class));
     }
 
-    public Mono<ServerResponse> exceptionExample(ServerRequest serverRequest) {
-        throw new RuntimeException("RuntimeException occurred");
-    }
 }

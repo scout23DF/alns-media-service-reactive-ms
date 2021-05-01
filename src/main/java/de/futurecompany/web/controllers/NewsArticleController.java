@@ -4,6 +4,7 @@ import de.futurecompany.exceptions.EntityAlreadyExistsException;
 import de.futurecompany.services.NewsArticleService;
 import de.futurecompany.services.dtos.ArticleDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,7 +42,7 @@ public class NewsArticleController {
 
         log.debug("REST request to save NewsArticle : {}", articleDTO);
 
-        if (articleDTO.getArticleId() != null) {
+        if (!StringUtils.isEmpty(articleDTO.getArticleId())) {
             throw new EntityAlreadyExistsException("An Article already exists with this Id: " + articleDTO.getArticleId());
         }
 

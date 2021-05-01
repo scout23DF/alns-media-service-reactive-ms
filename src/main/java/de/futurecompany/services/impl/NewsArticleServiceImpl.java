@@ -14,12 +14,12 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class NewsArticleServiceImpl implements NewsArticleService {
 
-    private final NewsArticleRepository weltArticleRepository;
+    private final NewsArticleRepository newsArticleRepository;
     private final NewsArticleMapper newsArticleMapper;
 
-    public NewsArticleServiceImpl(NewsArticleRepository weltArticleRepository,
+    public NewsArticleServiceImpl(NewsArticleRepository newsArticleRepository,
                                   NewsArticleMapper newsArticleMapper) {
-        this.weltArticleRepository = weltArticleRepository;
+        this.newsArticleRepository = newsArticleRepository;
         this.newsArticleMapper = newsArticleMapper;
     }
 
@@ -28,7 +28,7 @@ public class NewsArticleServiceImpl implements NewsArticleService {
 
         log.debug("Request to save NewsArticle : {}", newArticleDTO);
 
-        return weltArticleRepository.save(newsArticleMapper.toEntity(newArticleDTO))
+        return newsArticleRepository.save(newsArticleMapper.toEntity(newArticleDTO))
                                     .map(newsArticleMapper::toDTO);
 
     }
@@ -36,7 +36,7 @@ public class NewsArticleServiceImpl implements NewsArticleService {
     @Override
     public Mono<ArticleDTO> fetchArticle(String id) {
 
-        return weltArticleRepository.get(id)
+        return newsArticleRepository.findById(id)
                                     .map(newsArticleMapper::toDTO);
 
     }
@@ -44,24 +44,19 @@ public class NewsArticleServiceImpl implements NewsArticleService {
     @Override
     public Flux<ArticleDTO> listArticles() {
 
-        return weltArticleRepository.list()
+        return newsArticleRepository.findAll()
                                     .map(newsArticleMapper::toDTO);
 
     }
 
     private ArticleDTO outbound(NewsArticle article) {
-        return new ArticleDTO(article.getArticleId(),
-                              article.getTitle(),
-                              article.getText(),
-                              null
-                              /*
-                              article.getAuthors()
-                                     .stream()
-                                     .map(ArticleAuthor::getAuthorName)
-                                     .collect(Collectors.toList()
-                              )
-                              */
-        );
+
+        return ArticleDTO.builder()
+                         .articleId(article.getArticleId())
+                         .title(article.getTitle())
+                         .fullText(article.getFullText())
+                         .authorName(article.getAuthor().getName())
+                         .build();
     }
 
 }

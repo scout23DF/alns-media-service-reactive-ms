@@ -1,10 +1,5 @@
 package de.futurecompany.services.mappers;
 
-import org.mapstruct.BeanMapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
-import org.mapstruct.NullValuePropertyMappingStrategy;
-
 import java.util.List;
 
 /**
@@ -13,6 +8,7 @@ import java.util.List;
  * @param <D> - DTO type parameter.
  * @param <E> - Entity type parameter.
  */
+// @Mapper(componentModel = "spring", uses = {})
 public interface EntityMapper<D, E> {
     E toEntity(D dto);
 
@@ -22,7 +18,4 @@ public interface EntityMapper<D, E> {
 
     List<D> toDTOList(List<E> entityList);
 
-    @Named("partialUpdate")
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void partialUpdate(@MappingTarget E entity, D dto);
 }
