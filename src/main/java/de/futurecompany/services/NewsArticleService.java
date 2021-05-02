@@ -8,10 +8,14 @@ import reactor.core.publisher.Mono;
 
 public interface NewsArticleService {
 
-    Mono<ArticleDTO> fetchArticle(@Parameter(in = ParameterIn.PATH) String id);
+    Mono<ArticleDTO> fetchArticleById(@Parameter(in = ParameterIn.PATH) String id);
 
-    Flux<ArticleDTO> listArticles();
+    Flux<ArticleDTO> listAllArticles();
+
+    Flux<ArticleDTO> searchArticlesByAuthorId(String authorId);
 
     Mono<ArticleDTO> addArticle(ArticleDTO newArticleDTO);
+
+    Mono<ArticleDTO> updateArticle(ArticleDTO theFoundArticleDTO);
 
 }

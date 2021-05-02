@@ -1,6 +1,5 @@
 package de.futurecompany.services.impl;
 
-import de.futurecompany.models.NewsArticle;
 import de.futurecompany.repositories.NewsArticleRepository;
 import de.futurecompany.services.NewsArticleService;
 import de.futurecompany.services.dtos.ArticleDTO;
@@ -26,7 +25,7 @@ public class NewsArticleServiceImpl implements NewsArticleService {
     @Override
     public Mono<ArticleDTO> addArticle(ArticleDTO newArticleDTO) {
 
-        log.debug("Request to save NewsArticle : {}", newArticleDTO);
+        log.debug("Request to Add new NewsArticle : {}", newArticleDTO);
 
         return newsArticleRepository.save(newsArticleMapper.toEntity(newArticleDTO))
                                     .map(newsArticleMapper::toDTO);
@@ -34,7 +33,17 @@ public class NewsArticleServiceImpl implements NewsArticleService {
     }
 
     @Override
-    public Mono<ArticleDTO> fetchArticle(String id) {
+    public Mono<ArticleDTO> updateArticle(ArticleDTO articleToUpdateDTO) {
+
+        log.debug("Request to Update one NewsArticle : {}", articleToUpdateDTO);
+
+        return newsArticleRepository.save(newsArticleMapper.toEntity(articleToUpdateDTO))
+                                    .map(newsArticleMapper::toDTO);
+
+    }
+
+    @Override
+    public Mono<ArticleDTO> fetchArticleById(String id) {
 
         return newsArticleRepository.findById(id)
                                     .map(newsArticleMapper::toDTO);
@@ -42,21 +51,17 @@ public class NewsArticleServiceImpl implements NewsArticleService {
     }
 
     @Override
-    public Flux<ArticleDTO> listArticles() {
+    public Flux<ArticleDTO> listAllArticles() {
 
         return newsArticleRepository.findAll()
                                     .map(newsArticleMapper::toDTO);
 
     }
 
-    private ArticleDTO outbound(NewsArticle article) {
-
-        return ArticleDTO.builder()
-                         .articleId(article.getArticleId())
-                         .title(article.getTitle())
-                         .fullText(article.getFullText())
-                         .authorName(article.getAuthor().getName())
-                         .build();
+    @Override
+    public Flux<ArticleDTO> searchArticlesByAuthorId(String authorId) {
+        return newsArticleRepository.findByAuthorIdImpl(authorId)
+                                    .map(newsArticleMapper::toDTO);
     }
 
 }

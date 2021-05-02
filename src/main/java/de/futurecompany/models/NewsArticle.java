@@ -8,6 +8,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Table("tb_news_article")
 @Data
@@ -28,6 +29,12 @@ public class NewsArticle {
 
     @Column("tx_article")
     private String fullText;
+
+    @Column("is_published")
+    private Boolean published = Boolean.FALSE;
+
+    @Column("dt_publishing")
+    private LocalDateTime publishingDateTime;
 
     @Column("author_id")
     private String authorId;

@@ -13,10 +13,10 @@ import reactor.core.publisher.Mono;
 @Component
 public class NewsArticleHandler {
 
-    private final NewsArticleService articleService;
+    private final NewsArticleService newsArticleService;
 
-    public NewsArticleHandler(NewsArticleService articleService) {
-        this.articleService = articleService;
+    public NewsArticleHandler(NewsArticleService newsArticleService) {
+        this.newsArticleService = newsArticleService;
     }
 
     public Mono<ServerResponse> createNewsArticle(ServerRequest serverRequest) {
@@ -25,16 +25,16 @@ public class NewsArticleHandler {
 
         return cricketerWrapper.flatMap(oneNewArticle -> ServerResponse.ok()
                                                                        .contentType(MediaType.APPLICATION_JSON)
-                                                                       .body(articleService.addArticle(oneNewArticle),
+                                                                       .body(newsArticleService.addArticle(oneNewArticle),
                                                                              ArticleDTO.class)
         );
 
     }
 
-    public Mono<ServerResponse> fetchArticle(ServerRequest serverRequest) {
+    public Mono<ServerResponse> fetchArticleById(ServerRequest serverRequest) {
         String articleId = serverRequest.pathVariable("id");
 
-        Mono<ArticleDTO> article = articleService.fetchArticle(articleId);
+        Mono<ArticleDTO> article = newsArticleService.fetchArticleById(articleId);
 
         return ServerResponse.ok()
                              .contentType(MediaType.APPLICATION_JSON)
@@ -42,8 +42,8 @@ public class NewsArticleHandler {
     }
 
 
-    public Mono<ServerResponse> listArticles(ServerRequest serverRequest) {
-        Flux<ArticleDTO> articles = articleService.listArticles();
+    public Mono<ServerResponse> listAllArticles(ServerRequest serverRequest) {
+        Flux<ArticleDTO> articles = newsArticleService.listAllArticles();
 
         return ServerResponse.ok()
                              .contentType(MediaType.APPLICATION_JSON)

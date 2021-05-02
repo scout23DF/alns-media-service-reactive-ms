@@ -103,6 +103,11 @@ public class NewsArticleRepositoryCustomImpl implements NewsArticleRepositoryCus
         return createQuery(null, where("id").is(id)).one();
     }
 
+    @Override
+    public Flux<NewsArticle> findByAuthorIdImpl(String authorId) {
+        return createQuery(null, where("author_id").is(authorId)).all();
+    }
+
     private NewsArticle process(Row row, RowMetadata metadata) {
         NewsArticle entity = newsArticleRowMapper.apply(row, "e");
         entity.setAuthor(articleAuthorRowMapper.apply(row, "article_author"));
@@ -114,24 +119,8 @@ public class NewsArticleRepositoryCustomImpl implements NewsArticleRepositoryCus
     public <S extends NewsArticle> Mono<S> save(S entity) {
 
         return this.findById(entity.getArticleId())
-                .switchIfEmpty(insert(entity))
-                .then(update(entity)).thenReturn(entity);
-        /*
-
-        if (StringUtils.isEmpty(entity.getArticleId())) {
-            return insert(entity);
-        } else {
-            return update(entity)
-                .map(
-                    numberOfUpdates -> {
-                        if (numberOfUpdates.intValue() <= 0) {
-                            throw new IllegalStateException("Unable to update NewsArticle with id = " + entity.getArticleId());
-                        }
-                        return entity;
-                    }
-                );
-        }
-        */
+                   .switchIfEmpty(insert(entity))
+                   .then(update(entity)).thenReturn(entity);
     }
 
     @Override
@@ -153,6 +142,8 @@ class NewsArticleSqlHelper {
         columns.add(Column.aliased("id", table, columnPrefix + "_id"));
         columns.add(Column.aliased("ds_title", table, columnPrefix + "_ds_title"));
         columns.add(Column.aliased("tx_article", table, columnPrefix + "_tx_article"));
+        columns.add(Column.aliased("is_published", table, columnPrefix + "_is_published"));
+        columns.add(Column.aliased("dt_publishing", table, columnPrefix + "_dt_publishing"));
 
         columns.add(Column.aliased("author_id", table, columnPrefix + "_author_id"));
         return columns;

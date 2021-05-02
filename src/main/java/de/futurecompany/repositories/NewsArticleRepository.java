@@ -15,10 +15,11 @@ import reactor.core.publisher.Mono;
 @SuppressWarnings("unused")
 @Repository
 public interface NewsArticleRepository extends R2dbcRepository<NewsArticle, String>, NewsArticleRepositoryCustom {
+
     Flux<NewsArticle> findAllBy(Pageable pageable);
 
-    @Query("SELECT * FROM tb_news_article WHERE entity.author_id = :id")
-    Flux<NewsArticle> findByAuthor(Long authorId);
+    @Query("SELECT * FROM tb_news_article entity WHERE entity.author_id = :id")
+    Flux<NewsArticle> findByAuthor(String authorId);
 
     @Query("SELECT * FROM tb_news_article entity WHERE entity.author_id IS NULL")
     Flux<NewsArticle> findAllWhereAuthorIsNull();

@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder(builderClassName = "ArticleDTOBuilder", toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PRIVATE) //Hides the constructor to force useage of the Builder.
@@ -16,6 +18,9 @@ public class ArticleDTO {
     private final String articleId;
     private final String title;
     private final String fullText;
+    private Boolean published;
+    private LocalDateTime publishingDateTime;
+
     private final String authorId;
     private final String authorName;
 

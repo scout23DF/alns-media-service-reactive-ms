@@ -9,12 +9,19 @@ import reactor.core.publisher.Mono;
 public interface NewsArticleRepositoryCustom {
 
     <S extends NewsArticle> Mono<S> save(S entity);
+
     <S extends NewsArticle> Mono<S> insert(S entity);
+
     <S extends NewsArticle> Mono<S> update(S entity);
 
     Flux<NewsArticle> findAll();
+
     Mono<NewsArticle> findById(String id);
+
     Flux<NewsArticle> findAllBy(Pageable pageable);
+
     Flux<NewsArticle> findAllBy(Pageable pageable, Criteria criteria);
+
+    Flux<NewsArticle> findByAuthorIdImpl(String authorId);
 
 }
