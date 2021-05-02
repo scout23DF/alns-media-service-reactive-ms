@@ -1,5 +1,6 @@
 package de.futurecompany.repositories;
 
+import de.futurecompany.models.Asset;
 import de.futurecompany.models.NewsArticle;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.r2dbc.repository.Query;
@@ -13,20 +14,20 @@ import reactor.core.publisher.Mono;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface NewsArticleRepository extends R2dbcRepository<NewsArticle, String>, NewsArticleRepositoryCustom {
+public interface AssetRepository extends R2dbcRepository<Asset, String>, AssetRepositoryCustom {
 
-    Flux<NewsArticle> findAllBy(Pageable pageable);
+    Flux<Asset> findAllBy(Pageable pageable);
 
-    @Query("SELECT * FROM tb_news_article entity WHERE entity.author_id IS NULL")
-    Flux<NewsArticle> findAllWhereAuthorIsNull();
+    @Query("SELECT * FROM tb_asset entity WHERE entity.author_id IS NULL")
+    Flux<Asset> findAllWhereAuthorIsNull();
 
     // just to avoid having unambigous methods
     @Override
-    Flux<NewsArticle> findAll();
+    Flux<Asset> findAll();
 
     @Override
-    Mono<NewsArticle> findById(String id);
+    Mono<Asset> findById(String id);
 
     @Override
-    <S extends NewsArticle> Mono<S> save(S entity);
+    <S extends Asset> Mono<S> save(S entity);
 }

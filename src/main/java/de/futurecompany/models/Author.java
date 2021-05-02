@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE) //Hides the constructor to force useage of the Builder.
-public class ArticleAuthor {
+public class Author {
 
     @Id
     @Column("id")
@@ -30,5 +30,7 @@ public class ArticleAuthor {
     @Transient
     private List<NewsArticle> newsArticlesList;
 
+    @Transient
+    private List<Asset> assetsList;
 
 }

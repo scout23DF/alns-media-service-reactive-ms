@@ -4,7 +4,7 @@ import de.futurecompany.exceptions.EntityNotFoundExistsException;
 import de.futurecompany.models.enums.AppOperationTypeEnum;
 import de.futurecompany.models.enums.ServiceLayerStatusProcessingEnum;
 import de.futurecompany.models.enums.SingleOperationResponseEnum;
-import de.futurecompany.repositories.ArticleAuthorRepository;
+import de.futurecompany.repositories.AuthorRepository;
 import de.futurecompany.services.AuthorService;
 import de.futurecompany.services.NewsArticleService;
 import de.futurecompany.services.dtos.commons.AcknowledgeResultDTO;
@@ -19,10 +19,10 @@ import java.time.LocalDateTime;
 @Slf4j
 public class AuthorServiceImpl implements AuthorService {
 
-    private final ArticleAuthorRepository articleAuthorRepository;
+    private final AuthorRepository articleAuthorRepository;
     private final NewsArticleService newsArticleService;
 
-    public AuthorServiceImpl(ArticleAuthorRepository articleAuthorRepository,
+    public AuthorServiceImpl(AuthorRepository articleAuthorRepository,
                              NewsArticleService newsArticleService) {
 
         this.articleAuthorRepository = articleAuthorRepository;
@@ -47,11 +47,11 @@ public class AuthorServiceImpl implements AuthorService {
                                               .map(theFoundArticleDTO -> {
 
                                                   if (appOperationType.equals(AppOperationTypeEnum.PUBLISH_ARTICLE)) {
-                                                      theFoundArticleDTO.setPublished(Boolean.TRUE);
-                                                      theFoundArticleDTO.setPublishingDateTime(LocalDateTime.now());
+                                                      theFoundArticleDTO.setIsPublished(Boolean.TRUE);
+                                                      theFoundArticleDTO.setPublishedOn(LocalDateTime.now());
                                                   } else {
-                                                      theFoundArticleDTO.setPublished(Boolean.FALSE);
-                                                      theFoundArticleDTO.setPublishingDateTime(null);
+                                                      theFoundArticleDTO.setIsPublished(Boolean.FALSE);
+                                                      theFoundArticleDTO.setPublishedOn(null);
                                                   }
                                                   this.newsArticleService.updateArticle(theFoundArticleDTO).subscribe();
 

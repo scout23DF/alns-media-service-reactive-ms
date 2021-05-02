@@ -18,8 +18,8 @@ public class ArticleDTO {
     private final String articleId;
     private final String title;
     private final String fullText;
-    private Boolean published;
-    private LocalDateTime publishingDateTime;
+    private Boolean isPublished;
+    private LocalDateTime publishedOn;
 
     private final String authorId;
     private final String authorName;

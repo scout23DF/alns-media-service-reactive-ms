@@ -1,4 +1,4 @@
-package de.futurecompany.repositories.customImpls;
+package de.futurecompany.repositories;
 
 import de.futurecompany.models.NewsArticle;
 import org.springframework.data.domain.Pageable;

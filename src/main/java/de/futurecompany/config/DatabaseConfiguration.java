@@ -4,6 +4,7 @@ import io.r2dbc.spi.ConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.convert.CustomConversions;
 import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
@@ -15,6 +16,9 @@ import org.springframework.data.r2dbc.query.UpdateMapper;
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 import org.springframework.data.relational.core.dialect.RenderContextFactory;
 import org.springframework.data.relational.core.sql.render.SqlRenderer;
+import org.springframework.r2dbc.connection.init.CompositeDatabasePopulator;
+import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
+import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.time.*;
@@ -27,6 +31,31 @@ import java.util.List;
 @EnableR2dbcRepositories("de.futurecompany.repositories")
 @EnableTransactionManagement
 public class DatabaseConfiguration {
+
+    private final AppAlnsMediaServiceProperties appAlnsMediaServiceProperties;
+
+    public DatabaseConfiguration(AppAlnsMediaServiceProperties appAlnsMediaServiceProperties) {
+        this.appAlnsMediaServiceProperties = appAlnsMediaServiceProperties;
+    }
+
+    @Bean
+    public ConnectionFactoryInitializer initializer(ConnectionFactory connectionFactory) {
+
+        ConnectionFactoryInitializer initializer = new ConnectionFactoryInitializer();
+        initializer.setConnectionFactory(connectionFactory);
+        CompositeDatabasePopulator populator = new CompositeDatabasePopulator();
+
+        if (this.appAlnsMediaServiceProperties.isShouldDropAllTablesOnStartup()) {
+            populator.addPopulators(new ResourceDatabasePopulator(new ClassPathResource("clean-all.sql")));
+        }
+
+        populator.addPopulators(new ResourceDatabasePopulator(new ClassPathResource("schema.sql")));
+        populator.addPopulators(new ResourceDatabasePopulator(new ClassPathResource("data.sql")));
+        initializer.setDatabasePopulator(populator);
+
+        return initializer;
+
+    }
 
     // LocalDateTime seems to be the only type that is supported across all drivers atm
     // See https://github.com/r2dbc/r2dbc-h2/pull/139 https://github.com/mirromutth/r2dbc-mysql/issues/105

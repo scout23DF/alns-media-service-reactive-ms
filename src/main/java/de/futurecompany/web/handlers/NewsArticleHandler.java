@@ -21,12 +21,11 @@ public class NewsArticleHandler {
 
     public Mono<ServerResponse> createNewsArticle(ServerRequest serverRequest) {
 
-        Mono<ArticleDTO> cricketerWrapper = serverRequest.bodyToMono(ArticleDTO.class);
-
-        return cricketerWrapper.flatMap(oneNewArticle -> ServerResponse.ok()
-                                                                       .contentType(MediaType.APPLICATION_JSON)
-                                                                       .body(newsArticleService.addArticle(oneNewArticle),
-                                                                             ArticleDTO.class)
+        return serverRequest.bodyToMono(ArticleDTO.class)
+                            .flatMap(oneNewArticle -> ServerResponse.ok()
+                                                                    .contentType(MediaType.APPLICATION_JSON)
+                                                                    .body(newsArticleService.addArticle(oneNewArticle),
+                                                                          ArticleDTO.class)
         );
 
     }

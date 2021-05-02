@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class AppAlnsMediaServiceProperties {
 
     private boolean enabled;
+    private boolean shouldDropAllTablesOnStartup;
 
     private String swaggerPageTitle;
     private String swaggerPageDescription;

@@ -31,16 +31,16 @@ public class NewsArticle {
     private String fullText;
 
     @Column("is_published")
-    private Boolean published = Boolean.FALSE;
+    private Boolean isPublished = Boolean.FALSE;
 
     @Column("dt_publishing")
-    private LocalDateTime publishingDateTime;
+    private LocalDateTime publishedOn;
 
     @Column("author_id")
     private String authorId;
 
 
     @Transient
-    private ArticleAuthor author;
+    private Author author;
 
 }

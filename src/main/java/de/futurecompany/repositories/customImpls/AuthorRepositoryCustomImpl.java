@@ -1,8 +1,9 @@
 package de.futurecompany.repositories.customImpls;
 
-import de.futurecompany.models.ArticleAuthor;
+import de.futurecompany.models.Author;
+import de.futurecompany.repositories.AuthorRepositoryCustom;
 import de.futurecompany.repositories.helpers.EntityManager;
-import de.futurecompany.repositories.rowmappers.ArticleAuthorRowMapper;
+import de.futurecompany.repositories.rowmappers.AuthorRowMapper;
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
 import org.springframework.data.domain.Pageable;
@@ -28,17 +29,17 @@ import static org.springframework.data.relational.core.query.Criteria.where;
  * Spring Data SQL reactive custom repository implementation for the ArticleAuthor entity.
  */
 
-public class ArticleAuthorRepositoryCustomImpl implements ArticleAuthorRepositoryCustom {
+public class AuthorRepositoryCustomImpl implements AuthorRepositoryCustom {
 
     private final DatabaseClient db;
     private final R2dbcEntityTemplate r2dbcEntityTemplate;
     private final EntityManager entityManager;
 
-    private final ArticleAuthorRowMapper authorRowMapper;
+    private final AuthorRowMapper authorRowMapper;
 
     private static final Table entityTable = Table.aliased("tb_author", EntityManager.ENTITY_ALIAS);
 
-    public ArticleAuthorRepositoryCustomImpl(R2dbcEntityTemplate template, EntityManager entityManager, ArticleAuthorRowMapper authorRowMapper) {
+    public AuthorRepositoryCustomImpl(R2dbcEntityTemplate template, EntityManager entityManager, AuthorRowMapper authorRowMapper) {
         this.db = template.getDatabaseClient();
         this.r2dbcEntityTemplate = template;
         this.entityManager = entityManager;
@@ -46,20 +47,20 @@ public class ArticleAuthorRepositoryCustomImpl implements ArticleAuthorRepositor
     }
 
     @Override
-    public Flux<ArticleAuthor> findAllBy(Pageable pageable) {
+    public Flux<Author> findAllBy(Pageable pageable) {
         return findAllBy(pageable, null);
     }
 
     @Override
-    public Flux<ArticleAuthor> findAllBy(Pageable pageable, Criteria criteria) {
+    public Flux<Author> findAllBy(Pageable pageable, Criteria criteria) {
         return createQuery(pageable, criteria).all();
     }
 
-    RowsFetchSpec<ArticleAuthor> createQuery(Pageable pageable, Criteria criteria) {
-        List<Expression> columns = ArticleAuthorSqlHelper.getColumns(entityTable, EntityManager.ENTITY_ALIAS);
+    RowsFetchSpec<Author> createQuery(Pageable pageable, Criteria criteria) {
+        List<Expression> columns = AuthorSqlHelper.getColumns(entityTable, EntityManager.ENTITY_ALIAS);
         SelectFromAndJoin selectFrom = Select.builder().select(columns).from(entityTable);
 
-        String select = entityManager.createSelect(selectFrom, ArticleAuthor.class, pageable, criteria);
+        String select = entityManager.createSelect(selectFrom, Author.class, pageable, criteria);
         String alias = entityTable.getReferenceName().getReference();
         String selectWhere = Optional
             .ofNullable(criteria)
@@ -79,22 +80,22 @@ public class ArticleAuthorRepositoryCustomImpl implements ArticleAuthorRepositor
     }
 
     @Override
-    public Flux<ArticleAuthor> findAll() {
+    public Flux<Author> findAll() {
         return findAllBy(null, null);
     }
 
     @Override
-    public Mono<ArticleAuthor> findById(String id) {
+    public Mono<Author> findById(String id) {
         return createQuery(null, where("id").is(id)).one();
     }
 
-    private ArticleAuthor process(Row row, RowMetadata metadata) {
-        ArticleAuthor entity = authorRowMapper.apply(row, "e");
+    private Author process(Row row, RowMetadata metadata) {
+        Author entity = authorRowMapper.apply(row, "e");
         return entity;
     }
 
     @Override
-    public <S extends ArticleAuthor> Mono<S> save(S entity) {
+    public <S extends Author> Mono<S> save(S entity) {
 
         return this.findById(entity.getId())
                 .switchIfEmpty(insert(entity))
@@ -118,19 +119,19 @@ public class ArticleAuthorRepositoryCustomImpl implements ArticleAuthorRepositor
     }
 
     @Override
-    public <S extends ArticleAuthor> Mono<S> insert(S entity) {
+    public <S extends Author> Mono<S> insert(S entity) {
         return entityManager.insert(entity);
     }
 
 
     @Override
-    public <S extends ArticleAuthor> Mono<S> update(S entity) {
+    public <S extends Author> Mono<S> update(S entity) {
         return r2dbcEntityTemplate.update(entity);
     }
 
 }
 
-class ArticleAuthorSqlHelper {
+class AuthorSqlHelper {
 
     static List<Expression> getColumns(Table table, String columnPrefix) {
         List<Expression> columns = new ArrayList<>();

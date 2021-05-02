@@ -1,7 +1,9 @@
 package de.futurecompany.web.routes;
 
+import de.futurecompany.services.AssetService;
 import de.futurecompany.services.AuthorService;
 import de.futurecompany.services.NewsArticleService;
+import de.futurecompany.web.handlers.AssetHandler;
 import de.futurecompany.web.handlers.AuthorHandler;
 import de.futurecompany.web.handlers.NewsArticleHandler;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,7 @@ public class ApplicationRoutes {
 
     private static final String NEWS_ARTICLES_ENDPOINT = "/api/articles/";
     private static final String AUTHORS_ENDPOINT = "/api/authors/";
+    private static final String ASSETS_ENDPOINT = "/api/assets/";
 
     @Bean
     public RouterFunction<ServerResponse> articleRoutes(NewsArticleHandler newsArticleHandler) {
@@ -33,8 +36,8 @@ public class ApplicationRoutes {
           .and(route().GET(NEWS_ARTICLES_ENDPOINT,
                             accept(APPLICATION_JSON),
                             newsArticleHandler::listAllArticles,
-                            ops -> ops.beanClass(NewsArticleService.class).beanMethod("listAllArticles")).build())
-        );
+                            ops -> ops.beanClass(NewsArticleService.class).beanMethod("listAllArticles")).build()
+        ));
     }
 
     @Bean
@@ -49,6 +52,36 @@ public class ApplicationRoutes {
                            authorHandler::unpublishArticleById,
                            ops -> ops.beanClass(AuthorService.class).beanMethod("handleArticlePublishingById")).build()
         );
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> assetRoutes(AssetHandler assetHandler) {
+
+        return route().POST(ASSETS_ENDPOINT,
+                            accept(APPLICATION_JSON),
+                            assetHandler::addNewAsset,
+                            ops -> ops.beanClass(AssetService.class).beanMethod("create")).build()
+
+          .and(route().PUT(ASSETS_ENDPOINT + "{pAssetURL}",
+                            accept(APPLICATION_JSON),
+                            assetHandler::updateAsset,
+                            ops -> ops.beanClass(AssetService.class).beanMethod("update")).build()
+
+          .and(route().GET(ASSETS_ENDPOINT,
+                           accept(APPLICATION_JSON),
+                           assetHandler::listAllAssets,
+                           ops -> ops.beanClass(AssetService.class).beanMethod("searchAll")).build()
+
+          .and(route().GET(ASSETS_ENDPOINT + "{pAssetURL}",
+                            accept(APPLICATION_JSON),
+                            assetHandler::fetchAssetById,
+                            ops -> ops.beanClass(AssetService.class).beanMethod("searchById")).build()
+
+          .and(route().GET(ASSETS_ENDPOINT + "author/{pAuthorId}",
+                            accept(APPLICATION_JSON),
+                            assetHandler::listAllAssetsByAuthor,
+                            ops -> ops.beanClass(AssetService.class).beanMethod("searchAllByAuthorId")).build()
+        ))));
     }
 
 }
