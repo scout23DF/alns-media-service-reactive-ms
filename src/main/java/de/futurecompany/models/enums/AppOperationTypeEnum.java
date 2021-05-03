@@ -6,8 +6,8 @@ import java.util.Optional;
 public enum AppOperationTypeEnum {
 
     PUBLISH_ARTICLE(10, "Publish Article"),
-    UNPUBLISH_ARTICLE(11, "Unpublish Article");
-
+    UNPUBLISH_ARTICLE(11, "Unpublish Article"),
+    ADD_REFERENCED_ASSETS_TO_ARTICLE(20, "Add Referenced Asstes to an Article");
 
     private Integer codStatus;
     private String descriptionStatus;

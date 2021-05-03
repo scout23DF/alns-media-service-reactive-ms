@@ -24,10 +24,14 @@ public class AcknowledgeResultDTO<T> implements IGenericBaseDTO {
     private T payloadResponse;
 
     public void addErrorOccurrence(String pErrorMsg, Throwable pThrowableException) {
-        this.messagesProcessingDTOList.add(new MessageProcessingDTO(MessageProcessingTypeEnum.ERROR, pErrorMsg, null, pThrowableException));
+        this.messagesProcessingDTOList.add(new MessageProcessingDTO(MessageProcessingTypeEnum.ERROR, null, null, pErrorMsg, null, pThrowableException));
+    }
+
+    public void addErrorOccurrenceWithHttpStatus(String pErrorMsg, Throwable pThrowableException, HttpStatus pHttpStatus, String pItemMeaningfulId) {
+        this.messagesProcessingDTOList.add(new MessageProcessingDTO(MessageProcessingTypeEnum.ERROR, pHttpStatus, pItemMeaningfulId, pErrorMsg, null, pThrowableException));
     }
 
     public void addInfoMessage(String pInfoMsg) {
-        this.messagesProcessingDTOList.add(new MessageProcessingDTO(MessageProcessingTypeEnum.INFO, pInfoMsg, null, null));
+        this.messagesProcessingDTOList.add(new MessageProcessingDTO(MessageProcessingTypeEnum.INFO, null, null, pInfoMsg, null, null));
     }
 }

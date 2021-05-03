@@ -50,7 +50,11 @@ public class DatabaseConfiguration {
         }
 
         populator.addPopulators(new ResourceDatabasePopulator(new ClassPathResource("schema.sql")));
-        populator.addPopulators(new ResourceDatabasePopulator(new ClassPathResource("data.sql")));
+
+        if (this.appAlnsMediaServiceProperties.isShouldDropAllTablesOnStartup()) {
+            populator.addPopulators(new ResourceDatabasePopulator(new ClassPathResource("data.sql")));
+        }
+
         initializer.setDatabasePopulator(populator);
 
         return initializer;

@@ -1,6 +1,7 @@
 package de.futurecompany.web.handlers;
 
 import de.futurecompany.services.NewsArticleService;
+import de.futurecompany.services.dtos.ArticleAssetsRequestDTO;
 import de.futurecompany.services.dtos.ArticleDTO;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -49,4 +50,15 @@ public class NewsArticleHandler {
                              .body(BodyInserters.fromPublisher(articles, ArticleDTO.class));
     }
 
+    public Mono<ServerResponse> addReferencedAssets(ServerRequest serverRequest) {
+        String articleId = serverRequest.pathVariable("articleId");
+
+        return serverRequest.bodyToMono(ArticleAssetsRequestDTO.class)
+                            .flatMap(oneArticleAssetsRequestDTO -> ServerResponse.ok()
+                                                                                 .contentType(MediaType.APPLICATION_JSON)
+                                                                                 .body(newsArticleService.addReferencedAssets(articleId, oneArticleAssetsRequestDTO),
+                                                                                       ArticleAssetsRequestDTO.class)
+                );
+
+    }
 }

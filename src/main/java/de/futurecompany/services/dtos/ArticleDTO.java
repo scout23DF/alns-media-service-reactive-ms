@@ -24,7 +24,6 @@ public class ArticleDTO {
     private final String authorId;
     private final String authorName;
 
-
     @JsonPOJOBuilder(withPrefix = "")
     public static class ArticleDTOBuilder {
     }
