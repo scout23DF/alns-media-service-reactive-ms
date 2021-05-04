@@ -15,12 +15,13 @@ public class AccountingRepositoryImpl implements AccountingRepository {
 
     private static final String SQL_ROYALTIES_ASSETS_BY_AUTHOR =
          "select" +
-         //   " year(article.DT_PUBLISHING)                 as referenceYear, " +
-         //   " monthname(article.DT_PUBLISHING)            as referenceMonth, " +
-           " year(refasset.DT_REFERENCE_START)           as referenceYear, " +
-           " monthname(refasset.DT_REFERENCE_START)      as referenceMonth, " +
+           " year(article.DT_PUBLISHING)                 as referenceYear, " +
+           " monthname(article.DT_PUBLISHING)            as referenceMonth, " +
+         //  " year(refasset.DT_REFERENCE_START)           as referenceYear, " +
+         //  " monthname(refasset.DT_REFERENCE_START)      as referenceMonth, " +
            " author.ID                                   as authorId, " +
            " author.DS_NAME                              as authorName, " +
+           " count(asset.DS_URL)                         as amountOfAssetsReferencedInPublishedArticles, " +
            " sum(asset.VL_PUBLISHING_PRICE)              as totalRoyaltiesValue " +
           "from " +
            "   TB_AUTHOR author " +
@@ -29,8 +30,8 @@ public class AccountingRepositoryImpl implements AccountingRepository {
            "       inner join TB_NEWS_ARTICLE article on article.ID = refasset.ARTICLE_ID " +
           "where 1 = 1 " +
           "  and article.IS_PUBLISHED = TRUE " +
-         //  "  and article.DT_PUBLISHING <= current_timestamp() " +
-         "   and refasset.DT_REFERENCE_START <= current_timestamp() " +
+          "  and article.DT_PUBLISHING <= current_timestamp() " +
+         // "   and refasset.DT_REFERENCE_START <= current_timestamp() " +
          "group by " +
          "  referenceYear, " +
          "  referenceMonth, " +
@@ -59,6 +60,7 @@ public class AccountingRepositoryImpl implements AccountingRepository {
                                  royaltiesSummary.referenceMonth(String.valueOf(theRowColumnList.get("referenceMonth")));
                                  royaltiesSummary.authorId(String.valueOf(theRowColumnList.get("authorId")));
                                  royaltiesSummary.authorName(String.valueOf(theRowColumnList.get("authorName")));
+                                 royaltiesSummary.amountOfAssetsReferencedInPublishedArticles((Long) theRowColumnList.get("amountOfAssetsReferencedInPublishedArticles"));
                                  royaltiesSummary.totalRoyaltiesValue(new BigDecimal(String.valueOf(theRowColumnList.get("totalRoyaltiesValue"))));
 
                                  return royaltiesSummary.build();

@@ -13,6 +13,7 @@ public class RoyaltiesAssetsAuthorSummary {
     private String referenceMonth;
     private String authorId;
     private String authorName;
+    private Long amountOfAssetsReferencedInPublishedArticles;
     private BigDecimal totalRoyaltiesValue;
 
 }
