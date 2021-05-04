@@ -1,13 +1,7 @@
 package de.futurecompany.web.routes;
 
-import de.futurecompany.services.AssetService;
-import de.futurecompany.services.AuthorService;
-import de.futurecompany.services.NewsArticleService;
-import de.futurecompany.services.ReferencedAssetService;
-import de.futurecompany.web.handlers.AssetHandler;
-import de.futurecompany.web.handlers.AuthorHandler;
-import de.futurecompany.web.handlers.NewsArticleHandler;
-import de.futurecompany.web.handlers.ReferencedAssetHandler;
+import de.futurecompany.services.*;
+import de.futurecompany.web.handlers.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -24,6 +18,7 @@ public class ApplicationRoutes {
     private static final String AUTHORS_ENDPOINT = "/api/authors/";
     private static final String ASSETS_ENDPOINT = "/api/assets/";
     private static final String REFERENCED_ASSETS_ENDPOINT = "/api/referenced-assets/";
+    private static final String ACCOUNTING_ENDPOINT = "/api/accounting/";
 
     @Bean
     public RouterFunction<ServerResponse> articleRoutes(NewsArticleHandler newsArticleHandler) {
@@ -136,6 +131,16 @@ public class ApplicationRoutes {
          ))))));
     }
 
+    @Bean
+    public RouterFunction<ServerResponse> accountingRoutes(AccountingHandler accountingHandler) {
 
+        return route()
+              .GET(ACCOUNTING_ENDPOINT + "asset-royalties-by-author/",
+                   accept(APPLICATION_JSON),
+                   accountingHandler::listAllRoyaltiesAssetsByAuthorSummary,
+                   ops -> ops.beanClass(AccountingService.class).beanMethod("searchAll")).build()
+
+        ;
+    }
 
 }
